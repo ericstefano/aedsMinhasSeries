@@ -26,7 +26,7 @@ public class Espectador {
         StringBuilder sb = new StringBuilder();
         sb.append("\nEspectador(a): " + this.nome + "\n" + "Login: " + this.login + "\n" + "CPF: " + this.cpf + "\n");
         sb.append("\nAvaliações:");
-        sb.append(avaliacoes.dadosAvaliacao());
+        sb.append(avaliacoes.dadosAvaliacoes());
         return sb.toString();
     }
 }

@@ -1,6 +1,7 @@
 public class ListaAvaliacoes {
 
     public ElementoAvaliacao primeiro, ultimo;
+    int tamanho = 0;
 
     public ListaAvaliacoes() {
         this.primeiro = new ElementoAvaliacao(null);
@@ -12,6 +13,7 @@ public class ListaAvaliacoes {
     }
 
     public void inserirPorUltimo(Avaliacao qual) {
+        this.tamanho++;
 
         ElementoAvaliacao novo = new ElementoAvaliacao(qual);
         this.ultimo.proximo = novo;
@@ -30,6 +32,7 @@ public class ListaAvaliacoes {
     }
 
     public void inserirNaPosicao(Avaliacao qual, int posicao) {
+        this.tamanho++;
 
         ElementoAvaliacao novo = new ElementoAvaliacao(qual);
         ElementoAvaliacao aux = localizarPosicao(posicao);
@@ -53,6 +56,7 @@ public class ListaAvaliacoes {
     }
 
     public Avaliacao retirarDado(Avaliacao qual) {
+        this.tamanho--;
 
         if (listaVazia())
             return null;
@@ -86,7 +90,7 @@ public class ListaAvaliacoes {
             return aux.dados;
     }
 
-    public String dadosAvaliacao() {
+    public String dadosAvaliacoes() {
         if (listaVazia())
             return "Não possui avaliações!";
 
@@ -99,4 +103,25 @@ public class ListaAvaliacoes {
         }
         return sb.toString();
     }
+
+    public ElementoAvaliacao[] vetorAvaliacoes() {
+        if (listaVazia())
+            return null;
+
+        ElementoAvaliacao[] vetor = new ElementoAvaliacao[this.tamanho];
+        ElementoAvaliacao aux = this.primeiro.proximo;
+
+        int i = 0;
+        while (aux != null) {
+            System.out.println(i);
+            vetor[i] = aux;
+            aux = aux.proximo;
+            i++;
+        }
+
+        return vetor;
+    }
+
+    // public
+
 }

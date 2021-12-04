@@ -263,10 +263,16 @@ public class App {
         // Validar enetrada de avaliação (inserção de avaliação)
         // Verificar com o professor o que fazer caso o usuário ja possua a avaliação.
 
-        // Teste:
+        // Teste 1:
         // pesquisa espectador, 739298270-91
         // pesquisa por nome, Nihon Pretender - Temporada 2
         // pesquisa por data, 12/01/2018
+
+        // Teste 2:
+        // 739298270-91
+        // RCair739
+        // Cai500
+        // East Goodies - Temporada 1
     }
 
 }

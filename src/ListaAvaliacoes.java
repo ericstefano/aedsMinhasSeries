@@ -92,7 +92,7 @@ public class ListaAvaliacoes {
 
     public String dadosAvaliacoes() {
         if (listaVazia())
-            return "Não possui avaliações!";
+            return "Não possui avaliações!\n";
 
         StringBuilder sb = new StringBuilder();
         ElementoAvaliacao aux = this.primeiro.proximo;

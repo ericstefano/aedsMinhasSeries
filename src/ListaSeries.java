@@ -88,14 +88,26 @@ public class ListaSeries {
 
     public String dadosSeries() {
         if (listaVazia())
-            return "Não possui séries!";
+            return "Não encontrei nenhuma série!\n";
 
         StringBuilder sb = new StringBuilder();
         ElementoSerie aux = this.primeiro.proximo;
         while (aux != null) {
-            sb.append("\nNome da Série e Temporada: " + aux.dados.nome + "\n" + "Data de lançamento: "
-                    + aux.dados.data +
-                    "\n" + "Quantidade de Episódios: " + aux.dados.qtdEps + "\n");
+            sb.append(aux.dados.dadosSerie());
+            aux = aux.proximo;
+        }
+        return sb.toString();
+    }
+
+    public String dadosSeriesData(String data) {
+        if (listaVazia())
+            return "Não encontrei nenhuma série!\n";
+
+        StringBuilder sb = new StringBuilder();
+        ElementoSerie aux = this.primeiro.proximo;
+        while (aux != null) {
+            if (aux.dados.data.equals(data))
+                sb.append(aux.dados.dadosSerie());
             aux = aux.proximo;
         }
         return sb.toString();

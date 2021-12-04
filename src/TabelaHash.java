@@ -26,15 +26,13 @@ public class TabelaHash {
         return buscarLista(qual).pesquisar(qual);
     }
 
-    public static TabelaHash lerSeriesParaTabela(String arq, int tamanho) throws FileNotFoundException {
+    public static TabelaHash lerSeriesParaTabela(String arq, int tamanho, String type) throws FileNotFoundException {
         File arquivo = new File(arq);
         Scanner sc = new Scanner(arquivo);
         TabelaHash th = new TabelaHash(tamanho);
-        int linha = 1;
         while (sc.hasNextLine()) {
             Serie serie = new Serie(sc.nextLine());
-            System.out.println(String.valueOf(linha) + " - " + serie.hash(tamanho));
-            linha++;
+            serie.setHash(type);
             th.inserir(serie);
         }
         sc.close();

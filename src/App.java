@@ -14,18 +14,20 @@ public class App {
     }
 
     static void erro(String msg) {
+        limparTerminal();
         System.out.println(msg);
     }
 
     public static void inserirAvaliacao(Avaliacao aval, ArvoreBinaria ab, TabelaHash th) {
-        String mockEspec = String.format("%s;\"\";\"\";\"\"", aval.cpf);
-        Espectador pesquisaEspec = ab.buscar(new Espectador(mockEspec), ab);
+        Espectador mockEspec = new Espectador(String.format("%s;\"\";\"\";\"\"", aval.cpf));
+        Espectador pesquisaEspec = ab.buscar(mockEspec, ab);
 
         if (pesquisaEspec != null) {
             pesquisaEspec.avaliacoes.inserirPorUltimo(aval);
 
-            String mockSerie = String.format("%s;\"\";0", aval.nomeSerie);
-            Serie pesquisaSerie = th.buscarSerie(new Serie(mockSerie));
+            Serie mockSerie = new Serie(String.format("%s;\"\";0", aval.nomeSerie));
+            mockSerie.setHash("nome");
+            Serie pesquisaSerie = th.buscarSerie(mockSerie);
             if (pesquisaSerie != null) {
                 if (aval.epsAssistidos == pesquisaSerie.qtdEps) {
                     pesquisaSerie.inserirAvaliacao(aval.avaliacao);
@@ -49,22 +51,21 @@ public class App {
 
     public static void main(String[] args) throws FileNotFoundException {
         ArvoreBinaria ab = ArvoreBinaria.lerEspectadoresParaArvore("./Espectadores_2021-2.txt");
-        TabelaHash th = TabelaHash.lerSeriesParaTabela("./series.txt", 521); // 521 é o número primo mais próximo da
-                                                                             // quantidade de linhas no arquivo séries
-        lerAvaliacoes("./AvaliacoesSeries_1.txt", ab, th);
+        TabelaHash thNome = TabelaHash.lerSeriesParaTabela("./series.txt", 997, "nome");
+        TabelaHash thData = TabelaHash.lerSeriesParaTabela("./series.txt", 997, "data"); // 521
+
+        lerAvaliacoes("./AvaliacoesSeries_1.txt", ab, thNome);
         Scanner sc = new Scanner(System.in);
         Pattern padraoCpf = Pattern.compile("(?<!.)\\d{9}-\\d{2}$"); // (?<!.)\d{9}-\d{2}$
-        String cpf, nome, login, senha;
         int input;
-
         limparTerminal();
-
         do {
-            System.out.println("\033[0;37m" + "[o_o] (^_^) " + "\033[1;32m" + "[Ｍｉｎｈａｓ Ｓéｒｉｅｓ]" + "\033[0;37m"
+            System.out.println("\033[0;37m" + "[o_o] (^_^) " + "\033[1;32m" + "[Minhas Séries]" + "\033[0;37m"
                     + " (\".\") ($.$)\n");
             System.out.println("\033[1;91m" + "0 - Sair");
-            System.out.println("\033[1;93m" + "1 - Inserir novo espectador");
-            System.out.println("\033[1;94m" + "2 - Pesquisar espectador\n");
+            System.out.println("\033[1;94m" + "2 - Pesquisar espectador");
+            System.out.println("\033[1;96m" + "3 - Pesquisar série por nome");
+            System.out.println("\033[1;93m" + "4 - Pesquisar séries por data\n");
             System.out.println("\033[1;97m" + "Escolha uma opção: ");
 
             if (sc.hasNextInt()) {
@@ -73,62 +74,125 @@ public class App {
                 input = -1;
             }
             limparBuffer(sc);
-
+            limparTerminal();
             switch (input) {
 
                 case 0:
                     break;
-
-                case 1:
-                    System.out.println("\033[1;93m");
-                    System.out.println("Digite um CPF no padrão a seguir:\n123456789-01");
-                    if (sc.hasNext(padraoCpf)) {
-                        cpf = sc.nextLine().strip();
-                    } else {
-                        System.out.println("\nEntrada inválida! 乁(x⏠x)ㄏ\n");
-                        limparBuffer(sc);
-                        break;
-                    }
-
-                    System.out.println("Digite um nome pro usuário:");
-                    if (sc.hasNextLine()) {
-                        nome = sc.nextLine().strip();
-                    } else {
-                        System.out.println("\nEntrada inválida! 乁(x⏠x)ㄏ\n");
-                        limparBuffer(sc);
-                        break;
-                    }
-                    break;
-
                 case 2:
-                    System.out.println("Digite um cpf no padrão a seguir:\n123456789-01");
+                    limparTerminal();
+                    String cpf;
+                    System.out.println("\033[1;94m");
+                    System.out.println("[Pesquisa de Espectadores]\n");
+                    System.out.println(
+                            "Digite o CPF do espectador que deseja encontrar seguindo o padrão:\n123456789-01");
                     if (sc.hasNext(padraoCpf)) {
                         cpf = sc.nextLine().strip();
                     } else {
-                        System.out.println("\nEntrada inválida! 乁(x⏠x)ㄏ\n");
+                        erro("\n\033[1;91m" + "\nEntrada inválida! 乁(x⏠x)ㄏ\n");
                         limparBuffer(sc);
                         break;
                     }
 
                     Espectador pesquisa = ab.pesquisarEspectador(cpf);
-                    if (pesquisa == null)
-                        System.out.println("\nEspectador não encontrado!\n");
-                    else
+                    limparTerminal();
+                    if (pesquisa == null) {
+                        erro("\n\033[1;91m" + "Espectador não encontrado!\n");
+                    } else {
+                        System.out.println("Encontrei!");
                         System.out.println(pesquisa.dadosEspectador());
+                    }
                     break;
 
+                case 3:
+                    limparTerminal();
+                    String nomeETemp;
+                    System.out.println("\033[1;96m");
+                    System.out.println("[Pesquisa de Série por Nome]\n");
+                    System.out.println(
+                            "Digite o nome e a temporada da série que deseja encontrar no padrão a seguir:\nNome da Série - Temporada 1");
+                    if (sc.hasNextLine()) {
+                        nomeETemp = sc.nextLine().strip();
+                    } else {
+                        erro("\n\033[1;91m" + "\nEntrada inválida! 乁(x⏠x)ㄏ\n");
+                        limparBuffer(sc);
+                        break;
+                    }
+                    Serie mockSerieNome = new Serie(String.format("%s;\"\";0", nomeETemp));
+                    mockSerieNome.setHash("nome");
+                    Serie pesquisaSerieNome = thNome.buscarSerie(mockSerieNome);
+                    limparTerminal();
+                    if (pesquisaSerieNome == null) {
+                        erro("\n\033[1;91m" + "Nenhuma série encontrada!\n");
+                    } else {
+                        System.out.println("Encontrei!");
+                        System.out.println(pesquisaSerieNome.dadosSerie());
+                    }
+                    break;
+
+                case 4:
+                    String data;
+                    System.out.println("\033[1;93m");
+                    System.out.println("[Pesquisa de Séries por Data]\n");
+                    System.out.println(
+                            "Digite a data das séries que deseja encontrar no padrão a seguir:\ndd/mm/aaaa");
+
+                    if (sc.hasNextLine()) {
+                        data = sc.nextLine().strip();
+                    } else {
+                        erro("\n\033[1;91m" + "\nEntrada inválida! 乁(x⏠x)ㄏ\n");
+                        limparBuffer(sc);
+                        break;
+                    }
+                    Serie mockSerieData = new Serie(String.format("\"\";%s;0", data));
+                    mockSerieData.setHash("data");
+                    ListaSeries pesquisaSeriesData = thData.buscarLista(mockSerieData);
+                    limparTerminal();
+                    if (pesquisaSeriesData.listaVazia()) {
+                        erro("\n\033[1;91m" + "Nenhuma série encontrada!\n");
+                    } else {
+                        System.out.println("Encontrei!");
+
+                        System.out.println(pesquisaSeriesData.dadosSeriesData(data));
+                    }
+                    break;
                 default:
-                    System.out.println("\n\033[1;91m" + "Opção inválida! 乁(x⏠x)ㄏ\n");
+                    limparTerminal();
+                    erro("\n\033[1;91m" + "Opção inválida! 乁(x⏠x)ㄏ\n");
             }
+            if (input != 0) {
+                System.out.println("Aperte enter para continuar");
+                sc.nextLine();
+            }
+            limparTerminal();
         } while (input != 0);
 
         sc.close();
         limparTerminal();
         System.out.println("Fim!");
 
-        System.out
-                .println(th.buscarSerie(new Serie("The Walking Minds - Temporada 4;11/02/2013;5"))
-                        .dadosSerie());
+        // Serie mockSerie = new Serie("The Call of the Pretender - Temporada
+        // 7;12/01/2018;17");
+        // mockSerie.setHash("data");
+        // System.out
+        // .println(thData.buscarLista(mockSerie)
+        // .dadosSeries());
 
+        // mockSerie.setHash("nome");
+        // System.out
+        // .println(thNome.buscarSerie(mockSerie)
+        // .dadosSerie());
+
+        // Espectador mockEspec = new Espectador(String.format("%s;\"\";\"\";\"\"",
+        // "739298270-91"));
+
+        // ElementoAvaliacao[] vetor = ab.buscar(mockEspec,
+        // ab).avaliacoes.vetorAvaliacoes();
+
+        // System.out.println(ab.buscar(mockEspec,
+        // ab).dadosEspectador());
+        // for (int i = 0; i < vetor.length; i++) {
+        // System.out.println(vetor[i].dados.avaliacao);
+        // }
     }
 }

@@ -29,4 +29,12 @@ public class Espectador {
         sb.append(avaliacoes.dadosAvaliacoes());
         return sb.toString();
     }
+
+    public String dadosEspectadorOrdenado() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("\nEspectador(a): " + this.nome + "\n" + "Login: " + this.login + "\n" + "CPF: " + this.cpf + "\n");
+        sb.append("\nAvaliações:\n");
+        sb.append(avaliacoes.dadosAvaliacoesOrdenado());
+        return sb.toString();
+    }
 }

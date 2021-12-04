@@ -72,7 +72,7 @@ public class Serie {
                 + "Quantidade de episódios: " + this.qtdEps + "\n");
 
         if (getHash().equals("nome")) {
-            sb.append("Avaliação média: " + (avaliacaoMedia / espectadoresValidos) + "\n");
+            sb.append("Avaliação média: " + String.format("%.2f", avaliacaoMedia / espectadoresValidos) + "\n");
         }
 
         return sb.toString();

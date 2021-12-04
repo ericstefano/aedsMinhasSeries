@@ -113,7 +113,6 @@ public class ListaAvaliacoes {
 
         int i = 0;
         while (aux != null) {
-            System.out.println(i);
             vetor[i] = aux;
             aux = aux.proximo;
             i++;
@@ -122,6 +121,20 @@ public class ListaAvaliacoes {
         return vetor;
     }
 
-    // public
+    public String dadosAvaliacoesOrdenado() {
+        if (listaVazia())
+            return "Não possui avaliações!\n";
+
+        ElementoAvaliacao[] vet = vetorAvaliacoes();
+        Quicksort.sort(vet, 0, vet.length - 1);
+
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < vet.length; i++) {
+            sb.append("\nNome da Série e Temporada: " + vet[i].dados.nomeSerie + "\n" + "Avaliação: "
+                    + vet[i].dados.avaliacao
+                    + "\n" + "Quantidade de episódios assistidos: " + vet[i].dados.epsAssistidos + "\n");
+        }
+        return sb.toString();
+    }
 
 }

@@ -86,19 +86,6 @@ public class ListaSeries {
             return aux.dados;
     }
 
-    public String dadosSeries() {
-        if (listaVazia())
-            return "Não encontrei nenhuma série!\n";
-
-        StringBuilder sb = new StringBuilder();
-        ElementoSerie aux = this.primeiro.proximo;
-        while (aux != null) {
-            sb.append(aux.dados.dadosSerie());
-            aux = aux.proximo;
-        }
-        return sb.toString();
-    }
-
     public String dadosSeriesData(String data) {
         if (listaVazia())
             return "Não encontrei nenhuma série!\n";

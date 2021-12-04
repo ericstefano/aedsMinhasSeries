@@ -51,8 +51,8 @@ public class App {
 
     public static void main(String[] args) throws FileNotFoundException {
         ArvoreBinaria ab = ArvoreBinaria.lerEspectadoresParaArvore("./Espectadores_2021-2.txt");
-        TabelaHash thNome = TabelaHash.lerSeriesParaTabela("./series.txt", 997, "nome");
-        TabelaHash thData = TabelaHash.lerSeriesParaTabela("./series.txt", 997, "data"); // 521
+        TabelaHash thNome = TabelaHash.lerSeriesParaTabela("./series.txt", 521, "nome");
+        TabelaHash thData = TabelaHash.lerSeriesParaTabela("./series.txt", 521, "data");
 
         lerAvaliacoes("./AvaliacoesSeries_1.txt", ab, thNome);
         Scanner sc = new Scanner(System.in);
@@ -63,6 +63,7 @@ public class App {
             System.out.println("\033[0;37m" + "[o_o] (^_^) " + "\033[1;32m" + "[Minhas Séries]" + "\033[0;37m"
                     + " (\".\") ($.$)\n");
             System.out.println("\033[1;91m" + "0 - Sair");
+            System.out.println("\033[1;92m" + "1 - Inserir avaliação");
             System.out.println("\033[1;94m" + "2 - Pesquisar espectador");
             System.out.println("\033[1;96m" + "3 - Pesquisar série por nome");
             System.out.println("\033[1;93m" + "4 - Pesquisar séries por data\n");
@@ -79,6 +80,67 @@ public class App {
 
                 case 0:
                     break;
+                case 1:
+                    limparTerminal();
+                    String novoCpf;
+                    System.out.println("\033[1;92m");
+                    System.out.println("[Inserção de Avaliações]\n");
+                    System.out.println(
+                            "Digite o CPF do espectador que deseja inserir a avaliação seguindo o padrão:\n123456789-01");
+                    if (sc.hasNext(padraoCpf)) {
+                        novoCpf = sc.nextLine().strip();
+                    } else {
+                        erro("\033[1;91m" + "Entrada inválida! 乁(x⏠x)ㄏ\n");
+                        limparBuffer(sc);
+                        break;
+                    }
+                    Espectador pesquisaNovo = ab.pesquisarEspectador(novoCpf);
+                    limparTerminal();
+                    if (pesquisaNovo == null) {
+                        erro("\033[1;91m" + "Espectador não encontrado!\n");
+                        break;
+                    } else {
+                        System.out.println("Encontrei!");
+                        System.out.println("\nDigite o Login deste espectador: ");
+                        String login = sc.nextLine();
+                        if (!login.equals(pesquisaNovo.login)) {
+                            erro("\033[1;91m" + "Login inválido!\n");
+                            break;
+                        }
+
+                        limparTerminal();
+                        System.out.println("Digite a Senha deste espectador: ");
+                        String senha = sc.nextLine();
+                        if (!senha.equals(pesquisaNovo.senha)) {
+                            erro("\033[1;91m" + "Senha inválida!\n");
+                            break;
+                        }
+
+                        limparTerminal();
+                        System.out.println(
+                                "Digite o nome e a temporada da série que deseja inserir a avaliação seguindo o padrão:\nNome da Série - Temporada 1");
+                        String nomeSerie = sc.nextLine();
+                        Serie mockSerie = new Serie(String.format("%s;\"\";0", nomeSerie));
+                        mockSerie.setHash("nome");
+                        Serie pesquisaSerie = thNome.buscarSerie(mockSerie);
+                        if (pesquisaSerie == null) {
+                            erro("\033[1;91m" + "Série não encontrada!\n");
+                            break;
+                        }
+
+                        limparTerminal();
+                        System.out.println(
+                                "Quantos episódios desta série você assistiu?\n" + pesquisaSerie.nome + " possui "
+                                        + pesquisaSerie.qtdEps + " episódios");
+
+                        System.out.println("\nInsira um valor entre 0 e " + pesquisaSerie.qtdEps);
+                        int qtd = Integer.parseInt(sc.nextLine());
+                        if (qtd < 0 || qtd > pesquisaSerie.qtdEps) {
+                            erro("\033[1;91m" + "Quantidade de episódios inválida!\n");
+                            break;
+                        }
+                    }
+                    break;
                 case 2:
                     limparTerminal();
                     String cpf;
@@ -89,7 +151,7 @@ public class App {
                     if (sc.hasNext(padraoCpf)) {
                         cpf = sc.nextLine().strip();
                     } else {
-                        erro("\n\033[1;91m" + "\nEntrada inválida! 乁(x⏠x)ㄏ\n");
+                        erro("\033[1;91m" + "Entrada inválida! 乁(x⏠x)ㄏ\n");
                         limparBuffer(sc);
                         break;
                     }
@@ -97,10 +159,10 @@ public class App {
                     Espectador pesquisa = ab.pesquisarEspectador(cpf);
                     limparTerminal();
                     if (pesquisa == null) {
-                        erro("\n\033[1;91m" + "Espectador não encontrado!\n");
+                        erro("\033[1;91m" + "Espectador não encontrado!\n");
                     } else {
                         System.out.println("Encontrei!");
-                        System.out.println(pesquisa.dadosEspectador());
+                        System.out.println(pesquisa.dadosEspectadorOrdenado());
                     }
                     break;
 
@@ -114,7 +176,7 @@ public class App {
                     if (sc.hasNextLine()) {
                         nomeETemp = sc.nextLine().strip();
                     } else {
-                        erro("\n\033[1;91m" + "\nEntrada inválida! 乁(x⏠x)ㄏ\n");
+                        erro("\n\033[1;91m" + "Entrada inválida! 乁(x⏠x)ㄏ\n");
                         limparBuffer(sc);
                         break;
                     }
@@ -140,7 +202,7 @@ public class App {
                     if (sc.hasNextLine()) {
                         data = sc.nextLine().strip();
                     } else {
-                        erro("\n\033[1;91m" + "\nEntrada inválida! 乁(x⏠x)ㄏ\n");
+                        erro("\033[1;91m" + "Entrada inválida! 乁(x⏠x)ㄏ\n");
                         limparBuffer(sc);
                         break;
                     }
@@ -149,16 +211,15 @@ public class App {
                     ListaSeries pesquisaSeriesData = thData.buscarLista(mockSerieData);
                     limparTerminal();
                     if (pesquisaSeriesData.listaVazia()) {
-                        erro("\n\033[1;91m" + "Nenhuma série encontrada!\n");
+                        erro("\033[1;91m" + "Nenhuma série encontrada!\n");
                     } else {
                         System.out.println("Encontrei!");
-
                         System.out.println(pesquisaSeriesData.dadosSeriesData(data));
                     }
                     break;
                 default:
                     limparTerminal();
-                    erro("\n\033[1;91m" + "Opção inválida! 乁(x⏠x)ㄏ\n");
+                    erro("\033[1;91m" + "Opção inválida! 乁(x⏠x)ㄏ\n");
             }
             if (input != 0) {
                 System.out.println("Aperte enter para continuar");
@@ -169,30 +230,23 @@ public class App {
 
         sc.close();
         limparTerminal();
-        System.out.println("Fim!");
+        System.out.println("Fim! Obrigado por usar o Minhas Séries!");
 
-        // Serie mockSerie = new Serie("The Call of the Pretender - Temporada
-        // 7;12/01/2018;17");
-        // mockSerie.setHash("data");
-        // System.out
-        // .println(thData.buscarLista(mockSerie)
-        // .dadosSeries());
+        // TODO: Opção para inserir avaliações
+        // Trocar Quicksort pro Quicksort que o professor implementou
+        // Implementar algoritmo pra bagunçar o algoritmo antes (evitar pior caso do
+        // quicksort)
+        // Testar entradas, possíveis bugs
+        // Criar regex pra data
+        // Número primos (pelo quantidade de linhas de séries) para as tabelas hash
+        // Remover métodos que não estão sendo utilizados em todas as classes
+        // Colocar pra entrada de senhar invisivel ou com hashtag?
+        // Validar entrada de quantidade de episódios (inserção de avaliação)
+        // Validar enetrada de avaliação (inserção de avaliação)
 
-        // mockSerie.setHash("nome");
-        // System.out
-        // .println(thNome.buscarSerie(mockSerie)
-        // .dadosSerie());
-
-        // Espectador mockEspec = new Espectador(String.format("%s;\"\";\"\";\"\"",
-        // "739298270-91"));
-
-        // ElementoAvaliacao[] vetor = ab.buscar(mockEspec,
-        // ab).avaliacoes.vetorAvaliacoes();
-
-        // System.out.println(ab.buscar(mockEspec,
-        // ab).dadosEspectador());
-        // for (int i = 0; i < vetor.length; i++) {
-        // System.out.println(vetor[i].dados.avaliacao);
-        // }
+        // pesquisa espectador, 739298270-91
+        // pesquisa por nome, Nihon Pretender - Temporada 2
+        // pesquisa por data, 12/01/2018
     }
+
 }

@@ -77,7 +77,6 @@ public class App {
             limparBuffer(sc);
             limparTerminal();
             switch (input) {
-
                 case 0:
                     break;
                 case 1:
@@ -90,7 +89,7 @@ public class App {
                     if (sc.hasNext(padraoCpf)) {
                         novoCpf = sc.nextLine().strip();
                     } else {
-                        erro("\033[1;91m" + "Entrada inválida! 乁(x⏠x)ㄏ\n");
+                        erro("\033[1;91m" + "CPF inválido!\n");
                         limparBuffer(sc);
                         break;
                     }
@@ -132,13 +131,32 @@ public class App {
                         System.out.println(
                                 "Quantos episódios desta série você assistiu?\n" + pesquisaSerie.nome + " possui "
                                         + pesquisaSerie.qtdEps + " episódios");
-
                         System.out.println("\nInsira um valor entre 0 e " + pesquisaSerie.qtdEps);
-                        int qtd = Integer.parseInt(sc.nextLine());
-                        if (qtd < 0 || qtd > pesquisaSerie.qtdEps) {
+                        int qtdEps = Integer.parseInt(sc.nextLine());
+                        if (qtdEps < 0 || qtdEps > pesquisaSerie.qtdEps) {
                             erro("\033[1;91m" + "Quantidade de episódios inválida!\n");
                             break;
                         }
+
+                        limparTerminal();
+                        System.out.println(
+                                "Qual a avaliação para " + pesquisaSerie.nome + "?\n");
+                        System.out.println("Insira um valor entre 0 e 5");
+                        int aval = Integer.parseInt(sc.nextLine());
+                        if (aval < 0 || aval > 5) {
+                            erro("\033[1;91m" + "Avaliação inválida!\n");
+                            break;
+                        }
+
+                        Avaliacao objAval = new Avaliacao(
+                                String.format("%s;%s;%s;%s;", pesquisaNovo.cpf, pesquisaSerie.nome, qtdEps, aval));
+                        pesquisaNovo.avaliacoes.inserirPorUltimo(objAval);
+
+                        if (objAval.epsAssistidos == pesquisaSerie.qtdEps) {
+                            pesquisaSerie.inserirAvaliacao(objAval.avaliacao);
+                        }
+
+                        System.out.println("Avaliação inserida com sucesso!");
                     }
                     break;
                 case 2:
@@ -151,7 +169,7 @@ public class App {
                     if (sc.hasNext(padraoCpf)) {
                         cpf = sc.nextLine().strip();
                     } else {
-                        erro("\033[1;91m" + "Entrada inválida! 乁(x⏠x)ㄏ\n");
+                        erro("\033[1;91m" + "CPF inválido!\n");
                         limparBuffer(sc);
                         break;
                     }
@@ -232,7 +250,7 @@ public class App {
         limparTerminal();
         System.out.println("Fim! Obrigado por usar o Minhas Séries!");
 
-        // TODO: Opção para inserir avaliações
+        // TODO:
         // Trocar Quicksort pro Quicksort que o professor implementou
         // Implementar algoritmo pra bagunçar o algoritmo antes (evitar pior caso do
         // quicksort)
@@ -240,10 +258,12 @@ public class App {
         // Criar regex pra data
         // Número primos (pelo quantidade de linhas de séries) para as tabelas hash
         // Remover métodos que não estão sendo utilizados em todas as classes
-        // Colocar pra entrada de senhar invisivel ou com hashtag?
+        // Colocar pra entrada de senha ser invisivel ou com asterisco?
         // Validar entrada de quantidade de episódios (inserção de avaliação)
         // Validar enetrada de avaliação (inserção de avaliação)
+        // Verificar com o professor o que fazer caso o usuário ja possua a avaliação.
 
+        // Teste:
         // pesquisa espectador, 739298270-91
         // pesquisa por nome, Nihon Pretender - Temporada 2
         // pesquisa por data, 12/01/2018

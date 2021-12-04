@@ -77,19 +77,6 @@ public class ListaAvaliacoes {
 
     }
 
-    public Avaliacao pesquisar(Avaliacao qual) {
-        ElementoAvaliacao aux = this.primeiro.proximo;
-
-        while (aux != null && !aux.dados.igual(qual)) {
-            aux = aux.proximo;
-        }
-
-        if (aux == null)
-            return null;
-        else
-            return aux.dados;
-    }
-
     public String dadosAvaliacoes() {
         if (listaVazia())
             return "Não possui avaliações!\n";

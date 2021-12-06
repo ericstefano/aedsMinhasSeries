@@ -131,9 +131,9 @@ public class App {
                         System.out.println(
                                 "Quantos episódios desta série você assistiu?\n" + pesquisaSerie.nome + " possui "
                                         + pesquisaSerie.qtdEps + " episódios");
-                        System.out.println("\nInsira um valor entre 0 e " + pesquisaSerie.qtdEps);
+                        System.out.println("\nInsira um valor entre 1 e " + pesquisaSerie.qtdEps);
                         int qtdEps = Integer.parseInt(sc.nextLine());
-                        if (qtdEps < 0 || qtdEps > pesquisaSerie.qtdEps) {
+                        if (qtdEps < 1 || qtdEps > pesquisaSerie.qtdEps) {
                             erro("\033[1;91m" + "Quantidade de episódios inválida!\n");
                             break;
                         }
@@ -141,9 +141,9 @@ public class App {
                         limparTerminal();
                         System.out.println(
                                 "Qual a avaliação para " + pesquisaSerie.nome + "?\n");
-                        System.out.println("Insira um valor entre 0 e 5");
+                        System.out.println("Insira um valor entre 1 e 5");
                         int aval = Integer.parseInt(sc.nextLine());
-                        if (aval < 0 || aval > 5) {
+                        if (aval < 1 || aval > 5) {
                             erro("\033[1;91m" + "Avaliação inválida!\n");
                             break;
                         }
@@ -155,8 +155,8 @@ public class App {
                         if (objAval.epsAssistidos == pesquisaSerie.qtdEps) {
                             pesquisaSerie.inserirAvaliacao(objAval.avaliacao);
                         }
-
-                        System.out.println("Avaliação inserida com sucesso!");
+                        limparTerminal();
+                        System.out.println("Avaliação inserida com sucesso!\n");
                     }
                     break;
                 case 2:

@@ -1,32 +1,74 @@
 public class Quicksort {
-    public static int partition(ElementoAvaliacao[] A, int p, int r) {
-        int x = A[p].dados.avaliacao;
-        int i = p;
-        int j = r;
+    static int i, j;
+
+    public static void partition(ElementoAvaliacao[] arr, int l, int r) {
+
+        i = l - 1;
+        j = r;
+        int p = l - 1, q = r;
+        int v = arr[r].dados.avaliacao;
+
         while (true) {
+            while (arr[++i].dados.avaliacao < v)
+                ;
 
-            while (A[i].dados.avaliacao > x) {
-                i++;
+            while (v < arr[--j].dados.avaliacao)
+                if (j == l)
+                    break;
+
+            if (i >= j)
+                break;
+
+            ElementoAvaliacao temp = arr[i];
+            arr[i] = arr[j];
+            arr[j] = temp;
+
+            if (arr[i].dados.avaliacao == v) {
+                p++;
+                temp = arr[i];
+                arr[i] = arr[p];
+                arr[p] = temp;
+
             }
 
-            while (A[j].dados.avaliacao < x) {
-                j--;
+            if (arr[j].dados.avaliacao == v) {
+                q--;
+                temp = arr[q];
+                arr[q] = arr[j];
+                arr[j] = temp;
             }
-            if (i < j) {
-                ElementoAvaliacao temp = A[i];
-                A[i] = A[j];
-                A[j] = temp;
-            } else {
-                return j;
-            }
+        }
+
+        ElementoAvaliacao temp = arr[i];
+        arr[i] = arr[r];
+        arr[r] = temp;
+
+        j = i - 1;
+        for (int k = l; k < p; k++, j--) {
+            temp = arr[k];
+            arr[k] = arr[j];
+            arr[j] = temp;
+        }
+
+        i = i + 1;
+        for (int k = r - 1; k > q; k--, i++) {
+            temp = arr[i];
+            arr[i] = arr[k];
+            arr[k] = temp;
         }
     }
 
-    public static void sort(ElementoAvaliacao[] A, int p, int r) {
-        if (p < r) {
-            int q = partition(A, p, r);
-            sort(A, p, q);
-            sort(A, q + 1, r);
-        }
+    static void sort(ElementoAvaliacao[] arr, int l, int r) {
+        if (r <= l)
+            return;
+
+        i = 0;
+        j = 0;
+
+        partition(arr, l, r);
+
+        sort(arr, l, j);
+        sort(arr, i, r);
     }
+
 }

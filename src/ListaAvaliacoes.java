@@ -84,8 +84,9 @@ public class ListaAvaliacoes {
         StringBuilder sb = new StringBuilder();
         ElementoAvaliacao aux = this.primeiro.proximo;
         while (aux != null) {
-            sb.append("\nNome da Série e Temporada: " + aux.dados.nomeSerie + "\n" + "Avaliação: " + aux.dados.avaliacao
-                    + "\n" + "Quantidade de episódios assistidos: " + aux.dados.epsAssistidos + "\n");
+            sb.append("\nNome da Série e Temporada: " + aux.dados.nomeSerie + "\n"
+                    + "Quantidade de episódios assistidos: " + aux.dados.epsAssistidos + "\n" + "Avaliação: "
+                    + aux.dados.avaliacao + "\n");
             aux = aux.proximo;
         }
         return sb.toString();
@@ -116,10 +117,10 @@ public class ListaAvaliacoes {
         Quicksort.sort(vet, 0, vet.length - 1);
 
         StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < vet.length; i++) {
-            sb.append("\nNome da Série e Temporada: " + vet[i].dados.nomeSerie + "\n" + "Avaliação: "
-                    + vet[i].dados.avaliacao
-                    + "\n" + "Quantidade de episódios assistidos: " + vet[i].dados.epsAssistidos + "\n");
+        for (int i = vet.length - 1; i >= 0; i--) {
+            sb.append("\nNome da Série e Temporada: " + vet[i].dados.nomeSerie
+                    + "\n" + "Quantidade de episódios assistidos: " + vet[i].dados.epsAssistidos + "\n" + "Avaliação: "
+                    + vet[i].dados.avaliacao + "\n");
         }
         return sb.toString();
     }

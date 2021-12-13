@@ -16,7 +16,7 @@ public class App {
         sc.nextLine();
     }
 
-    static void erro(String msg) {
+    static void mensagem(String msg) {
         limparTerminal();
         System.out.println(msg);
     }
@@ -56,15 +56,13 @@ public class App {
         ArvoreBinaria ab = ArvoreBinaria.lerEspectadoresParaArvore("./dados2Espectadores2021-2.txt");
         TabelaHash thNome = TabelaHash.lerSeriesParaTabela("./dados2SeriesTV2021-2.txt", 521, "nome");
         TabelaHash thData = TabelaHash.lerSeriesParaTabela("./dados2SeriesTV2021-2.txt", 521, "data");
-
         lerAvaliacoes("./dados2AvaliacaoSeries2021-2.txt", ab, thNome);
         Scanner sc = new Scanner(System.in);
         Pattern padraoCpf = Pattern.compile("(?<!.)\\d{9}-\\d{2}$"); // (?<!.)\d{9}-\d{2}$
         SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
-
         int input;
-        limparTerminal();
         do {
+            limparTerminal();
             System.out.println("\033[0;37m" + "[o_o] (^_^) " + "\033[1;32m" + "[Minhas Séries]" + "\033[0;37m"
                     + " (\".\") ($.$)\n");
             System.out.println("\033[1;91m" + "0 - Sair");
@@ -81,78 +79,70 @@ public class App {
             }
             limparBuffer(sc);
             limparTerminal();
-
             switch (input) {
                 case 0:
                     break;
                 case 1:
-                    limparTerminal();
                     String novoCpf;
-                    System.out.println("\033[1;92m");
-                    System.out.println("[Inserção de Avaliações]\n");
+                    System.out.println("\033[1;92m" + "[Inserção de Avaliações]\n");
                     System.out.println(
                             "Digite o CPF do espectador que deseja inserir a avaliação seguindo o padrão:\n123456789-01");
                     if (sc.hasNext(padraoCpf)) {
                         novoCpf = sc.nextLine().strip();
                     } else {
-                        erro("\033[1;91m" + "CPF inválido!\n");
+                        mensagem("\033[1;91m" + "CPF inválido!\n");
                         limparBuffer(sc);
                         break;
                     }
                     Espectador pesquisaNovo = ab.pesquisarEspectador(novoCpf);
-                    limparTerminal();
                     if (pesquisaNovo == null) {
-                        erro("\033[1;91m" + "Espectador não encontrado!\n");
+                        mensagem("\033[1;91m" + "Espectador não encontrado!\n");
                         break;
                     } else {
-                        System.out.println("Encontrei!");
+                        mensagem("Encontrei!");
                         System.out.println(
                                 String.format("\nOlá %s, digite o seu login para continuar:",
                                         pesquisaNovo.nome.split(" ")[0]));
                         String login = sc.nextLine();
                         if (!login.equals(pesquisaNovo.login)) {
-                            erro("\033[1;91m" + "Login inválido!\n");
+                            mensagem("\033[1;91m" + "Login inválido!\n");
                             break;
                         }
 
-                        limparTerminal();
-                        System.out.println("Digite a Senha deste espectador: ");
+                        mensagem("Digite a sua senha: ");
                         String senha = sc.nextLine();
                         if (!senha.equals(pesquisaNovo.senha)) {
-                            erro("\033[1;91m" + "Senha inválida!\n");
+                            mensagem("\033[1;91m" + "Senha inválida!\n");
                             break;
                         }
 
-                        limparTerminal();
-                        System.out.println(
-                                "Digite o nome e a temporada da série que deseja inserir a avaliação seguindo o padrão:\nNome da Série - Temporada 1");
+                        mensagem(
+                                "Digite o nome e a temporada da série que deseja avaliar seguindo o padrão:\nNome da Série - Temporada 1");
                         String nomeSerie = sc.nextLine();
                         Serie mockSerie = new Serie(String.format("%s;\"\";0", nomeSerie));
                         mockSerie.setHash("nome");
                         Serie pesquisaSerie = thNome.buscarSerie(mockSerie);
                         if (pesquisaSerie == null) {
-                            erro("\033[1;91m" + "Série não encontrada!\n");
+                            mensagem("\033[1;91m" + "Série não encontrada!\n");
                             break;
                         }
 
-                        limparTerminal();
-                        System.out.println(
+                        mensagem(
                                 "Quantos episódios desta série você assistiu?\n" + pesquisaSerie.nome + " possui "
                                         + pesquisaSerie.qtdEps + " episódios");
                         System.out.println("\nInsira um valor entre 1 e " + pesquisaSerie.qtdEps);
                         int qtdEps = Integer.parseInt(sc.nextLine());
                         if (qtdEps < 1 || qtdEps > pesquisaSerie.qtdEps) {
-                            erro("\033[1;91m" + "Quantidade de episódios inválida!\n");
+                            mensagem("\033[1;91m" + "Quantidade de episódios inválida!\n");
                             break;
                         }
 
-                        limparTerminal();
-                        System.out.println(
+                        mensagem(
                                 "Qual a avaliação para " + pesquisaSerie.nome + "?\n");
                         System.out.println("Insira um valor entre 1 e 5");
                         int aval = Integer.parseInt(sc.nextLine());
                         if (aval < 1 || aval > 5) {
-                            erro("\033[1;91m" + "Avaliação inválida!\n");
+                            mensagem("\033[1;91m" + "Avaliação inválida!\n");
                             break;
                         }
 
@@ -163,105 +153,97 @@ public class App {
                         if (objAval.epsAssistidos == pesquisaSerie.qtdEps) {
                             pesquisaSerie.inserirAvaliacao(objAval.avaliacao);
                         }
-                        limparTerminal();
-                        System.out.println("Avaliação inserida com sucesso!\n");
+                        mensagem("Avaliação inserida com sucesso!\n");
                     }
                     break;
                 case 2:
-                    limparTerminal();
                     String cpf;
-                    System.out.println("\033[1;94m");
-                    System.out.println("[Pesquisa de Espectadores]\n");
+                    System.out.println("\033[1;94m" + "[Pesquisa de Espectadores]\n");
                     System.out.println(
                             "Digite o CPF do espectador que deseja encontrar seguindo o padrão:\n123456789-01");
                     if (sc.hasNext(padraoCpf)) {
                         cpf = sc.nextLine().strip();
                     } else {
-                        erro("\033[1;91m" + "CPF inválido!\n");
+                        mensagem("\033[1;91m" + "CPF inválido!\n");
                         limparBuffer(sc);
                         break;
                     }
 
                     Espectador pesquisa = ab.pesquisarEspectador(cpf);
-                    limparTerminal();
+
                     if (pesquisa == null) {
-                        erro("\033[1;91m" + "Espectador não encontrado!\n");
+                        mensagem("\033[1;91m" + "Espectador não encontrado!\n");
                     } else {
-                        System.out.println("Encontrei!");
+                        mensagem("Encontrei!");
                         System.out.println(pesquisa.dadosEspectadorOrdenado());
                     }
                     break;
-
                 case 3:
-                    limparTerminal();
                     String nomeETemp;
-                    System.out.println("\033[1;96m");
-                    System.out.println("[Pesquisa de Série por Nome]\n");
+                    System.out.println("\033[1;96m" + "[Pesquisa de Série por Nome]\n");
                     System.out.println(
                             "Digite o nome e a temporada da série que deseja encontrar no padrão a seguir:\nNome da Série - Temporada 1");
                     if (sc.hasNextLine()) {
                         nomeETemp = sc.nextLine().strip();
                     } else {
-                        erro("\n\033[1;91m" + "Entrada inválida!\n");
+                        mensagem("\n\033[1;91m" + "Entrada inválida!\n");
                         limparBuffer(sc);
                         break;
                     }
                     Serie mockSerieNome = new Serie(String.format("%s;\"\";0", nomeETemp));
                     mockSerieNome.setHash("nome");
                     Serie pesquisaSerieNome = thNome.buscarSerie(mockSerieNome);
-                    limparTerminal();
                     if (pesquisaSerieNome == null) {
-                        erro("\n\033[1;91m" + "Nenhuma série encontrada!\n");
+                        mensagem("\033[1;91m" + "Nenhuma série encontrada!\n");
                     } else {
-                        System.out.println("Encontrei!");
+                        mensagem("Encontrei!");
                         System.out.println(pesquisaSerieNome.dadosSerie());
                     }
                     break;
 
                 case 4:
                     String data;
-                    System.out.println("\033[1;93m");
-                    System.out.println("[Pesquisa de Séries por Data]\n");
+                    System.out.println("\033[1;93m" + "[Pesquisa de Séries por Data]\n");
                     System.out.println(
                             "Digite a data das séries que deseja encontrar no padrão a seguir:\ndd/mm/aaaa");
 
                     if (sc.hasNextLine()) {
                         data = sc.nextLine().strip();
                     } else {
-                        erro("\033[1;91m" + "Entrada inválida!\n");
+                        mensagem("\033[1;91m" + "Entrada inválida!\n");
                         limparBuffer(sc);
                         break;
                     }
+
                     try {
                         Date dt = new Date();
                         dt = formato.parse(data);
                     } catch (ParseException err) {
-                        erro("\033[1;91m" + "Data inválida!\n");
+                        mensagem("\033[1;91m" + "Data inválida!\n");
                         break;
                     }
+
                     try {
                         Serie mockSerieData = new Serie(String.format("\"\";%s;0", data));
                         mockSerieData.setHash("data");
                         ListaSeries pesquisaSeriesData = thData.buscarLista(mockSerieData);
                         if (pesquisaSeriesData.listaVazia()) {
-                            erro("\033[1;91m" + "Nenhuma série encontrada!\n");
+                            mensagem("\033[1;91m" + "Nenhuma série encontrada!\n");
                         } else {
-                            System.out.println("Encontrei!");
+                            mensagem("Encontrei!");
                             System.out.println(pesquisaSeriesData.dadosSeriesData(data));
                         }
                     } catch (Error err) {
-                        erro("\033[1;91m" + "Data inválida!\n");
+                        mensagem("\033[1;91m" + "Data inválida!\n");
                     }
                     break;
                 default:
-                    limparTerminal();
-                    erro("\033[1;91m" + "Opção inválida!\n");
+                    mensagem("\033[1;91m" + "Opção inválida!\n");
             }
             if (input != 0) {
                 System.out.println("Aperte enter para continuar");
                 sc.nextLine();
             }
-            limparTerminal();
         } while (input != 0);
 
         sc.close();

@@ -2,6 +2,9 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
 import java.util.regex.Pattern;
+import java.text.SimpleDateFormat;
+import java.text.ParseException;
+import java.util.Date;
 
 public class App {
     static void limparTerminal() {
@@ -50,13 +53,15 @@ public class App {
     }
 
     public static void main(String[] args) throws FileNotFoundException {
-        ArvoreBinaria ab = ArvoreBinaria.lerEspectadoresParaArvore("./Espectadores_2021-2.txt");
-        TabelaHash thNome = TabelaHash.lerSeriesParaTabela("./series.txt", 521, "nome");
-        TabelaHash thData = TabelaHash.lerSeriesParaTabela("./series.txt", 521, "data");
+        ArvoreBinaria ab = ArvoreBinaria.lerEspectadoresParaArvore("./dados2Espectadores2021-2.txt");
+        TabelaHash thNome = TabelaHash.lerSeriesParaTabela("./dados2SeriesTV2021-2.txt", 521, "nome");
+        TabelaHash thData = TabelaHash.lerSeriesParaTabela("./dados2SeriesTV2021-2.txt", 521, "data");
 
-        lerAvaliacoes("./AvaliacoesSeries_1.txt", ab, thNome);
+        lerAvaliacoes("./dados2AvaliacaoSeries2021-2.txt", ab, thNome);
         Scanner sc = new Scanner(System.in);
         Pattern padraoCpf = Pattern.compile("(?<!.)\\d{9}-\\d{2}$"); // (?<!.)\d{9}-\d{2}$
+        SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
+
         int input;
         limparTerminal();
         do {
@@ -76,6 +81,7 @@ public class App {
             }
             limparBuffer(sc);
             limparTerminal();
+
             switch (input) {
                 case 0:
                     break;
@@ -100,7 +106,9 @@ public class App {
                         break;
                     } else {
                         System.out.println("Encontrei!");
-                        System.out.println("\nDigite o Login deste espectador: ");
+                        System.out.println(
+                                String.format("\nOlá %s, digite o seu login para continuar:",
+                                        pesquisaNovo.nome.split(" ")[0]));
                         String login = sc.nextLine();
                         if (!login.equals(pesquisaNovo.login)) {
                             erro("\033[1;91m" + "Login inválido!\n");
@@ -194,7 +202,7 @@ public class App {
                     if (sc.hasNextLine()) {
                         nomeETemp = sc.nextLine().strip();
                     } else {
-                        erro("\n\033[1;91m" + "Entrada inválida! 乁(x⏠x)ㄏ\n");
+                        erro("\n\033[1;91m" + "Entrada inválida!\n");
                         limparBuffer(sc);
                         break;
                     }
@@ -220,24 +228,34 @@ public class App {
                     if (sc.hasNextLine()) {
                         data = sc.nextLine().strip();
                     } else {
-                        erro("\033[1;91m" + "Entrada inválida! 乁(x⏠x)ㄏ\n");
+                        erro("\033[1;91m" + "Entrada inválida!\n");
                         limparBuffer(sc);
                         break;
                     }
-                    Serie mockSerieData = new Serie(String.format("\"\";%s;0", data));
-                    mockSerieData.setHash("data");
-                    ListaSeries pesquisaSeriesData = thData.buscarLista(mockSerieData);
-                    limparTerminal();
-                    if (pesquisaSeriesData.listaVazia()) {
-                        erro("\033[1;91m" + "Nenhuma série encontrada!\n");
-                    } else {
-                        System.out.println("Encontrei!");
-                        System.out.println(pesquisaSeriesData.dadosSeriesData(data));
+                    try {
+                        Date dt = new Date();
+                        dt = formato.parse(data);
+                    } catch (ParseException err) {
+                        erro("\033[1;91m" + "Data inválida!\n");
+                        break;
+                    }
+                    try {
+                        Serie mockSerieData = new Serie(String.format("\"\";%s;0", data));
+                        mockSerieData.setHash("data");
+                        ListaSeries pesquisaSeriesData = thData.buscarLista(mockSerieData);
+                        if (pesquisaSeriesData.listaVazia()) {
+                            erro("\033[1;91m" + "Nenhuma série encontrada!\n");
+                        } else {
+                            System.out.println("Encontrei!");
+                            System.out.println(pesquisaSeriesData.dadosSeriesData(data));
+                        }
+                    } catch (Error err) {
+                        erro("\033[1;91m" + "Data inválida!\n");
                     }
                     break;
                 default:
                     limparTerminal();
-                    erro("\033[1;91m" + "Opção inválida! 乁(x⏠x)ㄏ\n");
+                    erro("\033[1;91m" + "Opção inválida!\n");
             }
             if (input != 0) {
                 System.out.println("Aperte enter para continuar");
@@ -255,12 +273,8 @@ public class App {
         // Implementar algoritmo pra bagunçar o algoritmo antes (evitar pior caso do
         // quicksort)
         // Testar entradas, possíveis bugs
-        // Criar regex pra data
-        // Número primos (pelo quantidade de linhas de séries) para as tabelas hash
         // Remover métodos que não estão sendo utilizados em todas as classes
         // Colocar pra entrada de senha ser invisivel ou com asterisco?
-        // Validar entrada de quantidade de episódios (inserção de avaliação)
-        // Validar enetrada de avaliação (inserção de avaliação)
         // Verificar com o professor o que fazer caso o usuário ja possua a avaliação.
 
         // Teste 1:

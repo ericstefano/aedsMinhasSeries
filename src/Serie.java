@@ -52,7 +52,11 @@ public class Serie {
         }
         String epoch = String.valueOf(dt.getTime());
         epoch = epoch.substring(0, epoch.length() - 5);
-        return (Integer.parseInt(epoch)) % modulo;
+        int _final = (Integer.parseInt(epoch)) % modulo;
+        if (_final < 0) {
+            throw new Error("Data inválida");
+        }
+        return _final;
 
     }
 

@@ -127,6 +127,12 @@ public class App {
                             break;
                         }
 
+                        if (pesquisaNovo.avaliacoes.localizarDadoPorNome(new Avaliacao(
+                                String.format("%s;%s;0;0;", pesquisaNovo.cpf, pesquisaSerie.nome))) != null) {
+                            mensagem("\033[1;91m" + "Você já avaliou esta série!\n");
+                            break;
+                        }
+
                         mensagem(
                                 "Quantos episódios desta série você assistiu?\n" + pesquisaSerie.nome + " possui "
                                         + pesquisaSerie.qtdEps + " episódios");

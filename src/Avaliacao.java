@@ -14,4 +14,8 @@ public class Avaliacao {
     public boolean igual(Avaliacao outra) {
         return (this.cpf == outra.cpf);
     }
+
+    public boolean nomeIgual(Avaliacao outra) {
+        return (this.nomeSerie.toLowerCase().equalsIgnoreCase(outra.nomeSerie));
+    }
 }

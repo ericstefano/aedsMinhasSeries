@@ -55,6 +55,19 @@ public class ListaAvaliacoes {
             return aux;
     }
 
+    public ElementoAvaliacao localizarDadoPorNome(Avaliacao qual) {
+        ElementoAvaliacao aux = this.primeiro.proximo;
+
+        while (aux != null && !aux.dados.nomeIgual(qual)) {
+            aux = aux.proximo;
+        }
+
+        if (aux == null)
+            return null;
+        else
+            return aux;
+    }
+
     public Avaliacao retirarDado(Avaliacao qual) {
         this.tamanho--;
 

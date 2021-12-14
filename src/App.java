@@ -222,8 +222,7 @@ public class App {
                     }
 
                     try {
-                        Date dt = new Date();
-                        dt = formato.parse(data);
+                        Date dt = formato.parse(data);
                     } catch (ParseException err) {
                         mensagem("\033[1;91m" + "Data inválida!\n");
                         break;
@@ -255,26 +254,6 @@ public class App {
         sc.close();
         limparTerminal();
         System.out.println("Fim! Obrigado por usar o Minhas Séries!");
-
-        // TODO:
-        // Trocar Quicksort pro Quicksort que o professor implementou
-        // Implementar algoritmo pra bagunçar o algoritmo antes (evitar pior caso do
-        // quicksort)
-        // Testar entradas, possíveis bugs
-        // Remover métodos que não estão sendo utilizados em todas as classes
-        // Colocar pra entrada de senha ser invisivel ou com asterisco?
-        // Verificar com o professor o que fazer caso o usuário ja possua a avaliação.
-
-        // Teste 1:
-        // pesquisa espectador, 739298270-91
-        // pesquisa por nome, Nihon Pretender - Temporada 2
-        // pesquisa por data, 12/01/2018
-
-        // Teste 2:
-        // 739298270-91
-        // RCair739
-        // Cai500
-        // East Goodies - Temporada 1
     }
 
 }

@@ -182,7 +182,7 @@ public class App {
                     String nomeETemp;
                     System.out.println("\033[1;96m" + "[Pesquisa de Série por Nome]\n");
                     System.out.println(
-                            "Digite o nome e a temporada da série que deseja encontrar no padrão a seguir:\nNome da Série - Temporada 1");
+                            "Digite o nome e a temporada da série que deseja encontrar no padrão a seguir:\nNome da Série - Temporada x");
                     if (sc.hasNextLine()) {
                         nomeETemp = sc.nextLine().strip();
                     } else {

@@ -1,0 +1,2 @@
+language = "java10"
+run = "java -Dfile.encoding=UTF-8 -cp \"bin\" App"

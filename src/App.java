@@ -54,13 +54,19 @@ public class App {
 
     public static void main(String[] args) throws FileNotFoundException {
         ArvoreBinaria ab = ArvoreBinaria.lerEspectadoresParaArvore("./dados2Espectadores2021-2.txt");
+
         TabelaHash thNome = TabelaHash.lerSeriesParaTabela("./dados2SeriesTV2021-2.txt", 521, "nome");
+
         TabelaHash thData = TabelaHash.lerSeriesParaTabela("./dados2SeriesTV2021-2.txt", 521, "data");
+
         lerAvaliacoes("./dados2AvaliacaoSeries2021-2.txt", ab, thNome);
-        Scanner sc = new Scanner(System.in);
-        Pattern padraoCpf = Pattern.compile("(?<!.)\\d{9}-\\d{2}$"); // (?<!.)\d{9}-\d{2}$
+
+        Pattern padraoCpf = Pattern.compile("(?<!.)\\d{9}-\\d{2}$");
+
         SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
+
         int input;
+        Scanner sc = new Scanner(System.in);
         do {
             limparTerminal();
             System.out.println("\033[0;37m" + "[o_o] (^_^) " + "\033[1;32m" + "[Minhas Séries]" + "\033[0;37m"

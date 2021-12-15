@@ -123,7 +123,7 @@ public class App {
                         }
 
                         mensagem(
-                                "Digite o nome e a temporada da série que deseja avaliar seguindo o padrão:\nNome da Série - Temporada 1");
+                                "Digite o nome e a temporada da série que deseja avaliar seguindo o padrão:\nNome da Série - Temporada x");
                         String nomeSerie = sc.nextLine();
                         Serie mockSerie = new Serie(String.format("%s;\"\";0", nomeSerie));
                         mockSerie.setHash("nome");
